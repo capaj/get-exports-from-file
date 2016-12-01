@@ -1,8 +1,8 @@
 import React, {Component} from 'React'
 
 class ShoppingList extends Component {
-  render() {
-    return <div className="shopping-list">
+  render () {
+    return <div className='shopping-list'>
       <h1>Shopping List for {this.props.name}</h1>
       <ul>
         <li>Instagram</li>
@@ -12,8 +12,8 @@ class ShoppingList extends Component {
     </div>
   }
 }
-const statelessComponentNotExported = (props) => <div>just a sample</div>
+const statelessComponentNotExported = (props) => <div>just a sample</div> //eslint-disable-line
 
-export const statelessComponent = (props) => <div>just a sample</div>
+export const statelessComponent = (props) => { return <div>just a sample</div> }
 
 export default ShoppingList

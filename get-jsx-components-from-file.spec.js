@@ -1,10 +1,10 @@
 import test from 'ava'
 import getJsxComponentsFromFile from './index'
 
-test('finds', t => {
+test('finds', async t => {
   t.deepEqual(getJsxComponentsFromFile('fixtures/basic.js'), [
-    {name: 'ShoppingList', props: [], exported: 'default'},
-    {name: 'statelessComponentNotExported', props: [], exported: false},
-    {name: 'statelessComponent', props: [], exported: true}
+    {name: 'statelessComponent', exported: true},
+    {name: 'ShoppingList', exported: 'default'}
+    // {name: 'statelessComponentNotExported', exported: false},
   ])
 })
