@@ -1,0 +1,32 @@
+{
+  "name": "get-jsx-components-from-file",
+  "version": "0.1.0",
+  "description": "parses a javascript file and outputs a list of exported components",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/capaj/get-jsx-components-from-file.git"
+  },
+  "keywords": [
+    "babel",
+    "babylon",
+    "jsx",
+    "react",
+    "components",
+    "tool",
+    "utility"
+  ],
+  "author": "capajj@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/capaj/get-jsx-components-from-file/issues"
+  },
+  "homepage": "https://github.com/capaj/get-jsx-components-from-file#readme",
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "standard": "^8.6.0"
+  }
+}
