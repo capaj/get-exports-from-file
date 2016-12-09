@@ -1,7 +1,7 @@
 {
-  "name": "get-jsx-components-from-file",
+  "name": "get-exports-from-file",
   "version": "0.1.0",
-  "description": "parses a javascript file and outputs a list of exported components",
+  "description": "parses a javascript file and outputs a list of exports",
   "main": "index.js",
   "scripts": {
     "test": "ava",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/capaj/get-jsx-components-from-file.git"
+    "url": "git+https://github.com/capaj/get-exports-from-file.git"
   },
   "keywords": [
     "babel",
@@ -18,26 +18,37 @@
     "jsx",
     "react",
     "components",
+    "exports",
     "tool",
     "utility"
   ],
   "author": "capajj@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/capaj/get-jsx-components-from-file/issues"
+    "url": "https://github.com/capaj/get-exports-from-file/issues"
   },
-  "homepage": "https://github.com/capaj/get-jsx-components-from-file#readme",
+  "homepage": "https://github.com/capaj/get-exports-from-file#readme",
   "devDependencies": {
     "ava": "^0.17.0",
+    "babel-polyfill": "^6.20.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0",
     "standard": "^8.6.0"
   },
   "dependencies": {
     "babylon": "^6.14.1",
-    "traverse": "^0.6.6"
+    "glob": "^7.1.1",
+    "lodash.camelcase": "^4.3.0",
+    "mz": "^2.6.0"
   },
   "ava": {
     "files": [
       "*.spec.js"
-    ]
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
   }
 }

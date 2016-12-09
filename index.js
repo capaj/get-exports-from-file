@@ -1,35 +1,51 @@
 const babylon = require('babylon')
-const fs = require('fs')
-const traverse = require('traverse')
+const fs = require('mz/fs')
+const path = require('path')
+const camelcase = require('lodash.camelcase')
 
 module.exports = function (filePath) {
-  const code = fs.readFileSync(filePath, 'utf8')
-  // console.log(code)
-  const tree = babylon.parse(code, {
-    sourceType: 'module',
-    plugins: ['*']
+  return fs.readFile(filePath, 'utf8').then((code) => {
+    const tree = babylon.parse(code, {
+      sourceType: 'module',
+      plugins: ['*']
+    })
+
+    const exportedComponents = []
+    tree.program.body.forEach((node) => {
+      // exports are only in toplevel
+      const {type} = node
+      if (type === 'ExportNamedDeclaration') {
+        let name
+        if (node.declaration) {
+          name = node.declaration.declarations[0].id.name
+        } else if (node.specifiers) {
+          name = node.specifiers[0].exported.name
+        }
+        exportedComponents.push({
+          name,
+          exported: true
+        })
+      } else if (type === 'ExportDefaultDeclaration') {
+        let {name} = node.declaration
+
+        if (!name) {
+          if (node.declaration.type === 'ClassDeclaration') {
+            name = node.declaration.id.name
+          } else {
+            name = path.basename(filePath).split('.')[0]
+            if (name.includes('-') || name.includes('_')) {
+              name = camelcase(name)
+            }
+          }
+        }
+        exportedComponents.push({
+          name: name,
+          exported: 'default'
+        })
+      }
+    })
+
+    return exportedComponents
   })
-  const exportedComponents = []
-  traverse(tree).forEach(function () {
-    if (this.key !== 'type') {
-      return
-    }
-    const {parent, node} = this
-    if (node === 'ExportNamedDeclaration') {
-      console.log(parent.node.declaration.declarations[0].id.name)
-      exportedComponents.push({
-        name: parent.node.declaration.declarations[0].id.name,
-        exported: true
-      })
-    } else if (node === 'ExportDefaultDeclaration') {
-      exportedComponents.push({
-        name: parent.node.declaration.name,
-        exported: 'default'
-      })
-    }
-    // console.log(this.value)
-  })
-  return exportedComponents
-  // console.log(tree)
 }
 
