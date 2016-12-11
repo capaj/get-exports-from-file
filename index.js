@@ -36,6 +36,9 @@ module.exports = function (filePath) {
             if (name.includes('-') || name.includes('_')) {
               name = camelcase(name)
             }
+            if (name === 'index') {
+              name = path.dirname(filePath)
+            }
           }
         }
         exportedComponents.push({

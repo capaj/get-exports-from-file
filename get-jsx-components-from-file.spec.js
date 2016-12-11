@@ -25,7 +25,13 @@ test('classname', async t => {
   const exp = await getExportsFromFile('fixtures/classname.js')
   t.deepEqual(exp, [
     { name: 'ShoppingList', exported: 'default' }
-    // {name: 'statelessComponentNotExported', exported: false},
+  ])
+})
+
+test('index inherits a name from parent dir', async t => {
+  const exp = await getExportsFromFile('fixtures/index.js')
+  t.deepEqual(exp, [
+    { name: 'fixtures', exported: 'default' }
   ])
 })
 
