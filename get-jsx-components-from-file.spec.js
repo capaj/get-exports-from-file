@@ -28,6 +28,13 @@ test('classname', async t => {
   ])
 })
 
+test('named function', async t => {
+  const exp = await getExportsFromFile('fixtures/named-function.js')
+  t.deepEqual(exp, [
+    { name: 'namedFn', exported: true }
+  ])
+})
+
 test('index inherits a name from parent dir', async t => {
   const exp = await getExportsFromFile('fixtures/index.js')
   t.deepEqual(exp, [

@@ -17,7 +17,11 @@ module.exports = function (filePath) {
       if (type === 'ExportNamedDeclaration') {
         let name
         if (node.declaration) {
-          name = node.declaration.declarations[0].id.name
+          if (node.declaration.declarations) {
+            name = node.declaration.declarations[0].id.name
+          } else if (node.declaration.id) {
+            name = node.declaration.id.name
+          }
         } else if (node.specifiers) {
           name = node.specifiers[0].exported.name
         }
