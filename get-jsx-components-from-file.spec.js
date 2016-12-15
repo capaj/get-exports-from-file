@@ -79,11 +79,12 @@ test.skip('es5 default', async t => {  // JSX components cannot appear with a lo
 
 // test()
 
-// test.only('files', () => {
+// test.only('files', async (t) => {
 //   const files = glob.sync('../be/frontend-be.com/src/**/*.jsx')
 //   // console.log(files)
-//   files.forEach((file) => {
-//     console.log(getExportsFromFile(file))
+//   await files.map(async (file) => {
+//     const exps = await getExportsFromFile(file)
+//     console.log(exps)
 //   })
 // })
 
