@@ -1,7 +1,7 @@
 import React, { Component } from 'React'
 
 export default class ShoppingList extends Component {
-  render() {
+  render () {
     return <div className='shopping-list'>
       <h1>Shopping List for {this.props.name}</h1>
       <ul>

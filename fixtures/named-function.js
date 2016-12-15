@@ -1,1 +1,1 @@
-export function namedFn() {}
+export function namedFn () {}
