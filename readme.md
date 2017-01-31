@@ -6,8 +6,8 @@ api is straighforward:
 ```javascript
 import getExportsFromFile from './index'
 // make sure to use absolute paths, not relative paths
-getExportsFromFile('/home/capaj/git_projects/some-js-file.js').then((exports) = {
-    exports // array of objects, each object has a `name` and `exported` props
+getExportsFromFile('/home/capaj/git_projects/some-js-file.js').then((result) = {
+    result.exportsFromFile // array of objects, each object has a `name` and `exported` props
 })
 
 ```

@@ -1,0 +1,1 @@
+exports = 'bad bad'
