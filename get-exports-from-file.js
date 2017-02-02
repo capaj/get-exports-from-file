@@ -3,52 +3,71 @@ const fs = require('mz/fs')
 const traverse = require('babel-traverse').default
 const makeUpImportDefaultName = require('./lib/make-up-import-default-name')
 
-module.exports = function (filePath, tryCjs) {
+const parse = (filePath) => {
   return fs.readFile(filePath, 'utf8').then((code) => {
-    const tree = babylon.parse(code, {
+    return babylon.parse(code, {
       sourceType: 'module',
       plugins: ['*']
     })
+  })
+}
 
-    const exported = []
-    tree.program.body.forEach((node) => {
-      const {type} = node
-      if (type === 'ExportNamedDeclaration') {
-        let name
-        if (node.declaration) {
-          if (node.declaration.declarations) {
-            name = node.declaration.declarations[0].id.name
-          } else if (node.declaration.id) {
-            name = node.declaration.id.name
+module.exports = {
+  es6 (filePath) {
+    return fs.readFile(filePath, 'utf8').then((code) => {
+      const tree = babylon.parse(code, {
+        sourceType: 'module',
+        plugins: ['*']
+      })
+
+      const exported = []
+      tree.program.body.forEach((node) => {
+        const {type} = node
+        if (type === 'ExportNamedDeclaration') {
+          let name
+          if (node.declaration) {
+            if (node.declaration.declarations) {
+              name = node.declaration.declarations[0].id.name
+            } else if (node.declaration.id) {
+              name = node.declaration.id.name
+            }
+            exported.push({
+              name
+            })
+          } else if (node.specifiers) {
+            node.specifiers.forEach((specifier) => {
+              exported.push({
+                name: specifier.exported.name
+              })
+            })
+          }
+        } else if (type === 'ExportDefaultDeclaration') {
+          let {name} = node.declaration
+
+          if (!name) {
+            if (node.declaration.type === 'ClassDeclaration') {
+              name = node.declaration.id.name
+            } else {
+              name = makeUpImportDefaultName(node, filePath)
+            }
           }
           exported.push({
-            name
-          })
-        } else if (node.specifiers) {
-          node.specifiers.forEach((specifier) => {
-            exported.push({
-              name: specifier.exported.name
-            })
+            name: name,
+            default: true
           })
         }
-      } else if (type === 'ExportDefaultDeclaration') {
-        let {name} = node.declaration
+      })
 
-        if (!name) {
-          if (node.declaration.type === 'ClassDeclaration') {
-            name = node.declaration.id.name
-          } else {
-            name = makeUpImportDefaultName(node, filePath)
-          }
-        }
-        exported.push({
-          name: name,
-          default: true
-        })
+      return {
+        exported,
+        ast: tree
       }
     })
+  },
+  cjs (filePath) {
+    return parse(filePath).then((tree) => {
+      const exported = []
 
-    if (tryCjs && exported.length === 0) {
       let foundADefault = false
       traverse.cheap(tree.program, (node) => {
         const {type} = node
@@ -96,12 +115,11 @@ module.exports = function (filePath, tryCjs) {
           }
         }
       })
-    }
-
-    return {
-      exported,
-      ast: tree
-    }
-  })
+      return {
+        exported,
+        ast: tree
+      }
+    })
+  }
 }
 

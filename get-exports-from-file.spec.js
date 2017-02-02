@@ -5,7 +5,7 @@ import getExportsFromFile from './get-exports-from-file'
 // import glob from 'glob'
 
 test('basic', async t => {
-  const exp = await getExportsFromFile('fixtures/basic.js')
+  const exp = await getExportsFromFile.es6('fixtures/basic.js')
   t.deepEqual(exp.exported, [
     {name: 'statelessComponent'},
     {name: 'ShoppingList', default: true}
@@ -14,7 +14,7 @@ test('basic', async t => {
 })
 
 test('flow', async t => {
-  const exp = await getExportsFromFile('fixtures/flow.js')
+  const exp = await getExportsFromFile.es6('fixtures/flow.js')
   t.deepEqual(exp.exported, [
     {name: 'DateRange'},
     {name: 'DateInterval'},
@@ -23,7 +23,7 @@ test('flow', async t => {
 })
 
 test('export as', async t => {
-  const exp = await getExportsFromFile('fixtures/export-as.js')
+  const exp = await getExportsFromFile.es6('fixtures/export-as.js')
   t.deepEqual(exp.exported, [
     { name: 'b' },
     { name: 'd' },
@@ -34,35 +34,35 @@ test('export as', async t => {
 })
 
 test('classname', async t => {
-  const exp = await getExportsFromFile('fixtures/classname.js')
+  const exp = await getExportsFromFile.es6('fixtures/classname.js')
   t.deepEqual(exp.exported, [
     { name: 'ShoppingList', default: true }
   ])
 })
 
 test('named function', async t => {
-  const exp = await getExportsFromFile('fixtures/named-function.js')
+  const exp = await getExportsFromFile.es6('fixtures/named-function.js')
   t.deepEqual(exp.exported, [
     { name: 'namedFn' }
   ])
 })
 
 test('index inherits a name from parent dir', async t => {
-  const exp = await getExportsFromFile('fixtures/index.js')
+  const exp = await getExportsFromFile.es6('fixtures/index.js')
   t.deepEqual(exp.exported, [
     { name: 'fixtures', default: true }
   ])
 })
 
 test('capitalize when JSX', async t => {  // JSX components cannot appear with a lowercase first letter
-  const exp = await getExportsFromFile('fixtures/should-get-capitalized.js')
+  const exp = await getExportsFromFile.es6('fixtures/should-get-capitalized.js')
   t.deepEqual(exp.exported, [
     { name: 'ShouldGetCapitalized', default: true }
   ])
 })
 
 test('commonJS', async t => {
-  const exp = await getExportsFromFile('node_modules/react-intl/lib/index.js', true)
+  const exp = await getExportsFromFile.cjs('node_modules/react-intl/lib/index.js', true)
   t.deepEqual(exp.exported, [
     { name: 'addLocaleData' },
     { name: 'intlShape' },
@@ -79,7 +79,7 @@ test('commonJS', async t => {
   ])
 })
 test('ignores first export in UMD', async t => {
-  const exp = await getExportsFromFile('node_modules/react-datepicker/dist/react-datepicker.js', true)
+  const exp = await getExportsFromFile.cjs('node_modules/react-datepicker/dist/react-datepicker.js', true)
   t.deepEqual(exp.exported, [
     {
       name: 'DatePicker',
@@ -110,19 +110,19 @@ test('ignores first export in UMD', async t => {
 })
 
 test('es5 simple', async t => {
-  const exp = await getExportsFromFile('fixtures/cjs.js', true)
+  const exp = await getExportsFromFile.cjs('fixtures/cjs.js', true)
   t.deepEqual(exp.exported, [
     { name: 'cjs', default: true }
   ])
 })
 
 test('bad cjs', async t => {
-  const exp = await getExportsFromFile('fixtures/bad-export.js', true)
+  const exp = await getExportsFromFile.cjs('fixtures/bad-export.js', true)
   t.deepEqual(exp.exported, [])
 })
 
 test('mobx', async t => {
-  const exp = await getExportsFromFile('node_modules/mobx/lib/mobx.js', true)
+  const exp = await getExportsFromFile.cjs('node_modules/mobx/lib/mobx.js', true)
   t.deepEqual(exp.exported, [
     { name: 'extras' },
     { name: 'action' },
