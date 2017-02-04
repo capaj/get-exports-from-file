@@ -14,12 +14,7 @@ const parse = (filePath) => {
 
 module.exports = {
   es6 (filePath) {
-    return fs.readFile(filePath, 'utf8').then((code) => {
-      const tree = babylon.parse(code, {
-        sourceType: 'module',
-        plugins: ['*']
-      })
-
+    return parse(filePath).then((tree) => {
       const exported = []
       tree.program.body.forEach((node) => {
         const {type} = node
@@ -82,7 +77,7 @@ module.exports = {
                 // console.log('A', node.expression)
 
                 return exported.push({
-                  name: makeUpImportDefaultName(node.right, filePath),
+                  name: makeUpImportDefaultName(node.expression.right, filePath),
                   default: true
                 })
               } else {
@@ -107,7 +102,7 @@ module.exports = {
                 // console.log('C', node.expression)
 
                 return exported.push({
-                  name: right.name || makeUpImportDefaultName(node.right, filePath),
+                  name: right.name || makeUpImportDefaultName(right, filePath),
                   default: true
                 })
               }

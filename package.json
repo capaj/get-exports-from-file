@@ -1,6 +1,6 @@
 {
   "name": "get-exports-from-file",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "parses a javascript file and outputs a list of exports",
   "main": "get-exports-from-file.js",
   "scripts": {
