@@ -121,6 +121,44 @@ test('bad cjs', async t => {
   t.deepEqual(exp.exported, [])
 })
 
+test('boom cjs', async t => {
+  const exp = await getExportsFromFile.cjs('fixtures/boom.js', true)
+  t.deepEqual(exp.exported, [
+    { name: 'wrap' },
+    { name: 'create' },
+    { name: 'badRequest' },
+    { name: 'unauthorized' },
+    { name: 'paymentRequired' },
+    { name: 'forbidden' },
+    { name: 'notFound' },
+    { name: 'methodNotAllowed' },
+    { name: 'notAcceptable' },
+    { name: 'proxyAuthRequired' },
+    { name: 'clientTimeout' },
+    { name: 'conflict' },
+    { name: 'resourceGone' },
+    { name: 'lengthRequired' },
+    { name: 'preconditionFailed' },
+    { name: 'entityTooLarge' },
+    { name: 'uriTooLong' },
+    { name: 'unsupportedMediaType' },
+    { name: 'rangeNotSatisfiable' },
+    { name: 'expectationFailed' },
+    { name: 'teapot' },
+    { name: 'badData' },
+    { name: 'locked' },
+    { name: 'preconditionRequired' },
+    { name: 'tooManyRequests' },
+    { name: 'illegal' },
+    { name: 'internal' },
+    { name: 'notImplemented' },
+    { name: 'badGateway' },
+    { name: 'serverUnavailable' },
+    { name: 'gatewayTimeout' },
+    { name: 'badImplementation' }
+  ])
+})
+
 test('mobx', async t => {
   const exp = await getExportsFromFile.cjs('node_modules/mobx/lib/mobx.js', true)
   t.deepEqual(exp.exported, [
